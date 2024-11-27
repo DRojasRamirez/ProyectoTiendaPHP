@@ -10,7 +10,7 @@
         ini_set( "display_errors", 1 );    
         require "../util/conexion.php";
 
-      /*  session_start();
+        /*session_start();
         if(isset($_SESSION["usuario"])) {
             echo "<h2>Bienveni@" . $_SESSION["usuario"] .  "</h2>";
         } else {

@@ -9,8 +9,8 @@
         error_reporting( E_ALL );
         ini_set( "display_errors", 1 );    
         require "../util/conexion.php";
-        /*
-        session_start();
+        
+       /* session_start();
         if(isset($_SESSION["usuario"])) {
             echo "<h2>Bienveni@" . $_SESSION["usuario"] .  "</h2>";
         } else {
@@ -109,15 +109,15 @@
                         $err_categoria = "La categoría no puede tener más de 30 caracteres";
                     } else {
                         $tmp_categoria= ucwords(strtolower($tmp_categoria));
-                        $categoria = $tmp_categoria;                     
-                    }
+                        $categoria = $tmp_categoria;                                
+                   }
                 }
                 
 
                 if($tmp_stock == ""){
                     $stock = 0;
                 } else {
-                    $patron = "/^[0-9]$/";
+                    $patron = "/^[0-9]{1,3}$/";
                     if(!preg_match($patron, $tmp_stock)){
                         $err_stock = "Formato de stock no valido, debe ingresar un valor numerico de máximo 3 digitos ";
                     } else {
@@ -130,7 +130,7 @@
                 }
 
 
-            }
+           }
 
             $sql = "SELECT * FROM categorias ORDER BY categoria";
             $resultado = $_conexion -> query($sql);
@@ -165,12 +165,11 @@
                 <select name="categoria">
                 <option disabled selected hidden>--- Elige una categoría ---</option>
                 <?php
-                    foreach($categorias as $categoria){ ?>
-                        <option value="<?php echo $categoria ?>">
-                            <?php echo $categoria;?>
+                    foreach($categorias as $_categoria){ ?>
+                        <option value="<?php echo $_categoria; ?>">
+                            <?php echo $_categoria; ?>
                         </option>
-                 <?php   }
-                ?>
+                <?php } ?>
                 </select>
                 <?php if(isset($err_categoria)) echo "<span class='error'>$err_categoria</span>" ?>
             </div> 
@@ -192,6 +191,7 @@
         </form>
 
         <?php
+        
             if(isset($nombre) && isset($precio) && 
                 isset($descripcion) && isset($categoria) 
                 && isset($stock) && isset($ubicacion_final)){ 
@@ -199,6 +199,7 @@
                     VALUES ('$nombre', '$precio', '$categoria', '$stock', '$ubicacion_final', '$descripcion')";
                 $_conexion -> query($sql);    
             } 
+
         ?>
 
     </div>
