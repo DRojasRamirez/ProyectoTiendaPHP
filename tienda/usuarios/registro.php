@@ -8,7 +8,7 @@
     <?php
         error_reporting( E_ALL );
         ini_set( "display_errors", 1 );    
-        require "../conexion.php";
+        require "../util/conexion.php";
     ?>
     <style>
         .error{
@@ -27,15 +27,47 @@
         }
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $usuario = $_POST["usuario"];
-            $contrasena = $_POST["contrasena"];
+            $tmp_usuario = $_POST["usuario"];
+            $tmp_contrasena = $_POST["contrasena"];
 
-            $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+                if($tmp_usuario == ""){
+                    $err_usuario = "El usuario es obligatorio";
+                } else{
+                    $patron = "/^[0-9A-Za-zÁÉÍÓÚáéíóúñÑÜü]+$/";
+                    if(!preg_match($patron, $tmp_usuario)){
+                        $err_usuario = "Formato de usuario no valido, debe ingresar solo letras y números ";
+                    } else {
+                        if(strlen($tmp_usuario) > 15 || strlen($tmp_usuario) < 3){
+                            $err_usuario = "El usuario debe de tener entre 3 y 15 carácteres";
+                        } else {
+                            $usuario = $tmp_usuario;
+                        }
+                    }  
+                } 
 
-            $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
-            $_conexion -> query($sql);
+                if($tmp_contrasena == ""){
+                    $err_contrasena = "La contraseña es obligatoria";
+                } else {
+                    $patron = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/";
+                    if(!preg_match($patron, $tmp_contrasena)){
+                        $err_contrasena = "La contraseña debe de tener al menos 8 caracteres, alguna letra en minúscula, en mayúscula y algun numero, puede tener carácteres especiales";
+                    } else {
+                        if(strlen($tmp_contrasena) > 15){
+                            $err_contrasena = "La contraseña no puede tener más de 15 carácteres";
+                        } else {
+                            $contrasena = $tmp_contrasena;
 
-            header("location: iniciar_sesion.php");
+                            $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+
+                            $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+                            $_conexion -> query($sql);
+                
+                            header("location: iniciar_sesion.php");
+
+                        }
+                    }
+                }
+
         }
 
 
@@ -51,14 +83,15 @@
             <div class="mb-3">
                 <label class="form-label">Usuario</label>
                 <input type="text" class="form-control" name="usuario">
+                <?php if(isset($err_usuario)) echo "<span class='error'>$err_usuario</span>" ?>
             </div>
             <div class="mb-3"> 
                 <label class="form-label">Contraseña</label>
                 <input type="password" class="form-control" name="contrasena">
+                <?php if(isset($err_contrasena)) echo "<span class='error'>$err_contrasena</span>" ?>
             </div>
             <div  class="mb-3">
-                <input class="btn btn-primary" type="submit" value="Registrarse">
-               
+                <input class="btn btn-primary" type="submit" value="Registrarse">              
             </div>
             
         </form>

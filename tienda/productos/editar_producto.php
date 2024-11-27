@@ -10,13 +10,13 @@
         ini_set( "display_errors", 1 );    
         require "../util/conexion.php";
 
-        /*session_start();
+        session_start();
         if(isset($_SESSION["usuario"])) {
             echo "<h2>Bienveni@" . $_SESSION["usuario"] .  "</h2>";
         } else {
-            header("location: usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
+            header("location: ../usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
             exit;
-        }*/
+        }
     ?>
     <style>
         .error{
@@ -80,11 +80,16 @@
                 if($tmp_nombre == ""){
                     $err_nombre = "El nombre es obligatorio";
                 } else {
-                    if(strlen($tmp_nombre) > 50){
-                        $err_nombre = "El nombre no puede tener más de 50 caracteres";
+                    $patron = "/^[0-9A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/";
+                    if(!preg_match($patron, $tmp_nombre)){
+                        $err_nombre = "El nombre solo puede tener letras, numeros y espacios en blanco";
                     } else {
-                        $tmp_nombre = ucwords(strtolower($tmp_nombre));
-                        $nombre = $tmp_nombre;                     
+                        if(strlen($tmp_nombre) > 50 || strlen($tmp_nombre) < 2 ){
+                            $err_nombre = "El nombre no puede tener más de 50 caracteres o menos de 2";
+                        } else {
+                            $tmp_nombre = ucwords(strtolower($tmp_nombre));
+                            $nombre = $tmp_nombre;                     
+                        }
                     }
                 }
 

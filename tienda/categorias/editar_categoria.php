@@ -10,13 +10,13 @@
         ini_set( "display_errors", 1 );    
         require "../util/conexion.php";
 
-       /* session_start();
+        session_start();
         if(isset($_SESSION["usuario"])) {
             echo "<h2>Bienveni@" . $_SESSION["usuario"] .  "</h2>";
         } else {
-            header("location: usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
+            header("location: ../usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
             exit;
-        }*/
+        }
     ?>
     <style>
         .error{

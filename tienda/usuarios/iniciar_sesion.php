@@ -8,7 +8,7 @@
     <?php
         error_reporting( E_ALL );
         ini_set( "display_errors", 1 );    
-        require "../conexion.php";
+        require "../util/conexion.php";
     ?>
     <style>
         .error{
@@ -35,7 +35,7 @@
             //var_dump($resultado);
 
             if($resultado -> num_rows == 0){
-                echo "<h2>El usuario $usuario no existe</h2>";
+                $err_usuario = "El usuario $usuario no existe";
             } else {
                 $datos_usuario = $resultado -> fetch_assoc();
 
@@ -58,7 +58,7 @@
                     exit;
 
                 } else {
-                    echo "<h2>La contraseña es incorrecta</h2>";
+                    $err_contrasena = "La contraseña introducida es incorrecta";
                 }
 
             }
@@ -77,10 +77,13 @@
             <div class="mb-3">
                 <label class="form-label">Usuario</label>
                 <input type="text" class="form-control" name="usuario">
+                <?php if(isset($err_usuario)) echo "<span class='error'>$err_usuario</span>" ?>
             </div>
             <div class="mb-3"> 
                 <label class="form-label">Contraseña</label>
                 <input type="password" class="form-control" name="contrasena">
+                <?php if(isset($err_contrasena)) echo "<span class='error'>$err_contrasena</span>" ?>
+                
             </div>
             <div  class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Iniciar Sesion">            
@@ -89,8 +92,13 @@
         </form>
 
         <div class="mb-3">
+            <h3>Volver a tienda</h3>
+            <a class="btn btn-secondary" href="../index.php">Tienda</a>
+        </div>
+
+        <div class="mb-3">
             <h3>O si no tienes cuenta, registrate</h3>
-            <a class="btn btn-secondary" href="./registro.php">Registrarse</a>
+            <a class="btn btn-info" href="./registro.php">Registrarse</a>
         </div>
 
 

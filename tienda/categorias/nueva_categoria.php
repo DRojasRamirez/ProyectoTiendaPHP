@@ -9,14 +9,14 @@
         error_reporting( E_ALL );
         ini_set( "display_errors", 1 );    
         require "../util/conexion.php";
-    /*
+    
         session_start();
         if(isset($_SESSION["usuario"])) {
             echo "<h2>Bienveni@" . $_SESSION["usuario"] .  "</h2>";
         } else {
-            header("location: usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
+            header("location: ../usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
             exit;
-        }*/
+        }
     ?>
     <style>
         .error{
@@ -56,12 +56,17 @@
                 if($tmp_categoria == ""){
                     $err_categoria = "La categoria es obligatoria";
                 } else {
-                    if(strlen($tmp_categoria) > 30){
-                        $err_categoria = "La categoría no puede tener más de 30 caracteres";
+                    $patron = "/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/";
+                    if(!preg_match($patron, $tmp_categoria)){
+                        $err_categoria = "La categoria solo puede tener letras y espacios";
                     } else {
-                        $tmp_categoria= ucwords(strtolower($tmp_categoria));
-                        $categoria = $tmp_categoria;                     
-                    }
+                        if(strlen($tmp_categoria) > 30 || strlen($tmp_categoria) < 2){
+                            $err_categoria = "La categoría no puede tener más de 30 caracteres o menos de 2";
+                        } else {
+                            $tmp_categoria= ucwords(strtolower($tmp_categoria));
+                            $categoria = $tmp_categoria;                     
+                        }
+                    } 
                 }
 
                 if($tmp_descripcion == ""){

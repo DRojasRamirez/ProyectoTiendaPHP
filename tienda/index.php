@@ -13,8 +13,8 @@
     require("./util/conexion.php");
 
 
-    /*session_start();
-    if(isset($_SESSION["usuario"])) {
+    session_start();
+    /*if(isset($_SESSION["usuario"])) {
         echo "<h2>Bienveni@" . $_SESSION["usuario"] .  "</h2>";
     } else {
         header("location: usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
@@ -27,8 +27,25 @@
 <body>
 
     <div class="container">
+        <h1>Bienvenid@ a esta tienda tan rara</h1>
+    <?php
 
-     <a class="btn btn-info" href="./usuarios/iniciar_sesion.php">Iniciar sesion</a> 
+    if(!isset($_SESSION["usuario"])) {
+        ?>
+        <a class="btn btn-success" href="./usuarios/iniciar_sesion.php">Iniciar sesion</a> 
+        <a class="btn btn-primary" href="./usuarios/registro.php">Registrarse</a> 
+
+        
+  <?php  } else {
+        echo "<h2>Bienveni@ " . $_SESSION["usuario"] .  "</h2>";
+     ?> 
+     <a class="btn btn-info" href="productos/index.php">Ver tabla editable de Productos</a>
+     <a class="btn btn-info" href="categorias/index.php">Ver tabla editable de Categorías</a>
+     <a class="btn btn-danger" href="usuarios/cerrar_sesion.php">Cerrar sesion</a>
+     <?php
+       // exit;
+    }
+    ?>
 
         <h1>Tabla de Productos</h1>
         
