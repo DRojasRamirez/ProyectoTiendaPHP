@@ -55,29 +55,48 @@
                 $descripcion = $fila["descripcion"];               
             }
 
-
-           /* $sql = "SELECT * FROM categorias ORDER BY nombre_estudio";
-            $resultado = $_conexion -> query($sql);
-            $estudios = [];
-
-
-            while($fila = $resultado -> fetch_assoc()){
-                array_push($estudios, $fila["nombre_estudio"]);
-            }*/
-
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $categoria = $_POST["categoria"];
-                $descripcion = $_POST["descripcion"];
+                $tmp_categoria = $_POST["categoria"];
+                $tmp_descripcion = $_POST["descripcion"];
 
-                $sql = "UPDATE categorias SET
+                if($tmp_categoria == ""){
+                    $err_categoria = "La categoria es obligatoria";
+                } else {
+                        $patron = "/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/";
+                        if(!preg_match($patron, $tmp_categoria)){
+                            $err_categoria = "La categoria solo puede tener letras y espacios";
+                        } else {
+                            if(strlen($tmp_categoria) > 30 || strlen($tmp_categoria) < 2){
+                                $err_categoria = "La categoría no puede tener más de 30 caracteres o menos de 2";
+                            } else {
+                                $tmp_categoria= ucwords(strtolower($tmp_categoria));
+                                $categoria = $tmp_categoria;                     
+                            }
+                        } 
+                    }                   
+                }
+
+                if($tmp_descripcion == ""){
+                    $err_descripcion = "La descripcion es obligatoria";
+                } else {
+                    if(strlen($tmp_descripcion) > 255){
+                        $err_descripcion = "La descripcion no puede tener más de 255 caracteres";
+                    } else {
+                        $descripcion = $tmp_descripcion;                     
+                    }
+                }
+
+                if(isset($categoria) && isset($descripcion)){
+                    $sql = "UPDATE categorias SET
                     categoria = '$categoria',
                     descripcion = '$descripcion'
                     WHERE categoria = '$categoria'
-                ";
+                    ";
 
-                $_conexion -> query($sql);
+                    $_conexion -> query($sql);
+                }
 
-            }
+                
             
         ?>        
 

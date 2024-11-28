@@ -39,10 +39,11 @@
   <?php  } else {
         echo "<h2>Bienveni@ " . $_SESSION["usuario"] .  "</h2>";
      ?> 
-     <a class="btn btn-info" href="productos/index.php">Ver tabla editable de Productos</a>
-     <a class="btn btn-info" href="categorias/index.php">Ver tabla editable de Categorías</a>
-     <a class="btn btn-danger" href="usuarios/cerrar_sesion.php">Cerrar sesion</a>
-     <?php
+    <a class="btn btn-info" href="productos/index.php">Ver tabla editable de Productos</a>
+    <a class="btn btn-info" href="categorias/index.php">Ver tabla editable de Categorías</a>
+    <a class="btn btn-warning" href="usuarios/cambiar_credenciales.php">Cambiar contraseña</a>
+    <a class="btn btn-danger" href="usuarios/cerrar_sesion.php">Cerrar sesion</a>
+    <?php
        // exit;
     }
     ?>

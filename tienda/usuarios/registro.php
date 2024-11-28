@@ -32,17 +32,23 @@
 
                 if($tmp_usuario == ""){
                     $err_usuario = "El usuario es obligatorio";
-                } else{
-                    $patron = "/^[0-9A-Za-zÁÉÍÓÚáéíóúñÑÜü]+$/";
-                    if(!preg_match($patron, $tmp_usuario)){
-                        $err_usuario = "Formato de usuario no valido, debe ingresar solo letras y números ";
+                } else {
+                    $sql = "SELECT * FROM usuarios WHERE usuario = '$tmp_usuario'";
+                    $resultado = $_conexion -> query($sql);
+                    if($resultado -> num_rows > 0){
+                        $err_usuario = "El usuario " . $tmp_usuario . " ya existe";
                     } else {
-                        if(strlen($tmp_usuario) > 15 || strlen($tmp_usuario) < 3){
-                            $err_usuario = "El usuario debe de tener entre 3 y 15 carácteres";
+                        $patron = "/^[0-9A-Za-zÁÉÍÓÚáéíóúñÑÜü]+$/";
+                        if(!preg_match($patron, $tmp_usuario)){
+                            $err_usuario = "Formato de usuario no valido, debe ingresar solo letras y números ";
                         } else {
-                            $usuario = $tmp_usuario;
-                        }
-                    }  
+                            if(strlen($tmp_usuario) > 15 || strlen($tmp_usuario) < 3){
+                                $err_usuario = "El usuario debe de tener entre 3 y 15 carácteres";
+                            } else {
+                                $usuario = $tmp_usuario;
+                            }
+                        }  
+                    }
                 } 
 
                 if($tmp_contrasena == ""){
@@ -56,17 +62,19 @@
                             $err_contrasena = "La contraseña no puede tener más de 15 carácteres";
                         } else {
                             $contrasena = $tmp_contrasena;
-
-                            $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
-
-                            $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
-                            $_conexion -> query($sql);
-                
-                            header("location: iniciar_sesion.php");
-
                         }
                     }
                 }
+
+                if(isset($usuario) && isset($contrasena)){ 
+
+                    $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+                    $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+                    $_conexion -> query($sql);
+        
+                    header("location: iniciar_sesion.php");
+                    
+                } 
 
         }
 

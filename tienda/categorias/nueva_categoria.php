@@ -40,6 +40,8 @@
 
         <?php
 
+            
+
             if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                 $tmp_categoria = depurar($_POST ["categoria"]);
@@ -56,17 +58,23 @@
                 if($tmp_categoria == ""){
                     $err_categoria = "La categoria es obligatoria";
                 } else {
-                    $patron = "/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/";
-                    if(!preg_match($patron, $tmp_categoria)){
-                        $err_categoria = "La categoria solo puede tener letras y espacios";
-                    } else {
-                        if(strlen($tmp_categoria) > 30 || strlen($tmp_categoria) < 2){
-                            $err_categoria = "La categoría no puede tener más de 30 caracteres o menos de 2";
+                    $sql = "SELECT * FROM categorias WHERE categoria = '$tmp_categoria'";
+                    $resultado = $_conexion -> query($sql);
+                    if($resultado -> num_rows > 0){
+                        $err_categoria = "La categoria " . $tmp_categoria . " ya existe";
+                    }else {
+                        $patron = "/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/";
+                        if(!preg_match($patron, $tmp_categoria)){
+                            $err_categoria = "La categoria solo puede tener letras y espacios";
                         } else {
-                            $tmp_categoria= ucwords(strtolower($tmp_categoria));
-                            $categoria = $tmp_categoria;                     
-                        }
-                    } 
+                            if(strlen($tmp_categoria) > 30 || strlen($tmp_categoria) < 2){
+                                $err_categoria = "La categoría no puede tener más de 30 caracteres o menos de 2";
+                            } else {
+                                $tmp_categoria= ucwords(strtolower($tmp_categoria));
+                                $categoria = $tmp_categoria;                     
+                            }
+                        } 
+                    }                   
                 }
 
                 if($tmp_descripcion == ""){
