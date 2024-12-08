@@ -15,7 +15,7 @@
 
     session_start();
     if(isset($_SESSION["usuario"])) {
-        echo "<h2>Bienveni@ " . $_SESSION["usuario"] .  "</h2>";
+        echo "<h2 class='display-3 text-center'>Bienveni@ " . $_SESSION["usuario"] .  "</h2>";
     } else {
         header("location: ../usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
         exit;
@@ -30,7 +30,7 @@
 
      
 
-        <h1>Tabla de Productos</h1>
+        <h1 class="text-center">Tabla de Productos</h1>
         
         <?php
 
@@ -55,9 +55,15 @@
 
 
         ?>
-        <a class="btn btn-secondary" href="nuevo_producto.php">Crear un nuevo producto</a>
-        <a class="btn btn-info" href="../index.php">Volver a tienda</a> 
-        <a class="btn btn-danger" href="../usuarios/cerrar_sesion.php">Cerrar sesion</a> 
+
+        <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                <a class="btn btn-secondary navbar-brand" href="nuevo_producto.php">Crear un nuevo producto</a>
+                <a class="btn btn-info navbar-brand" href="../index.php">Volver a tienda</a> 
+                <a class="btn btn-danger navbar-brand" href="../usuarios/cerrar_sesion.php">Cerrar sesion</a> 
+            </div>
+        </nav>
+        
         <table class="table table-striped table-hover align-middle">
             <thead class="table-info">
                 <tr>

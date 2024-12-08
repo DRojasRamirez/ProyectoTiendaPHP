@@ -12,7 +12,7 @@
     
         session_start();
         if(isset($_SESSION["usuario"])) {
-            echo "<h2>Bienveni@" . $_SESSION["usuario"] .  "</h2>";
+            echo "<h2 class='display-3 text-center'>Bienveni@" . $_SESSION["usuario"] .  "</h2>";
         } else {
             header("location: ../usuarios/iniciar_sesion.php"); // nunca usar esta funcion en el body o al menos siempre antes de que haya codigo
             exit;

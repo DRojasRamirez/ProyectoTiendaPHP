@@ -27,28 +27,38 @@
 <body>
 
     <div class="container">
-        <h1>Bienvenid@ a esta tienda tan rara</h1>
-    <?php
 
-    if(!isset($_SESSION["usuario"])) {
+        <h1  class="display-1 text-center" >Bienvenid@ a esta tienda tan rara</h1>
+
+        <?php
+
+        if(!isset($_SESSION["usuario"])) {
         ?>
-        <a class="btn btn-success" href="./usuarios/iniciar_sesion.php">Iniciar sesion</a> 
-        <a class="btn btn-primary" href="./usuarios/registro.php">Registrarse</a> 
-
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="btn btn-success navbar-brand" href="./usuarios/iniciar_sesion.php">Iniciar sesion</a> 
+                <a class="btn btn-primary navbar-brand" href="./usuarios/registro.php">Registrarse</a> 
+            </div>
+        </nav>
         
-  <?php  } else {
-        echo "<h2>Bienveni@ " . $_SESSION["usuario"] .  "</h2>";
-     ?> 
-    <a class="btn btn-info" href="productos/index.php">Ver tabla editable de Productos</a>
-    <a class="btn btn-info" href="categorias/index.php">Ver tabla editable de Categorías</a>
-    <a class="btn btn-warning" href="usuarios/cambiar_credenciales.php">Cambiar contraseña</a>
-    <a class="btn btn-danger" href="usuarios/cerrar_sesion.php">Cerrar sesion</a>
-    <?php
-       // exit;
-    }
-    ?>
+        <?php  } else {
+        echo "<h2 class='display-4 text-center'>Bienveni@ " . $_SESSION["usuario"] .  "</h2>";
+        ?> 
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="btn btn-info navbar-brand" href="productos/index.php">Ver tabla editable de Productos</a>
+                <a class="btn btn-info navbar-brand" href="categorias/index.php">Ver tabla editable de Categorías</a>
+                <a class="btn btn-warning navbar-brand" href="usuarios/cambiar_credenciales.php">Cambiar contraseña</a>
+                <a class="btn btn-danger navbar-brand" href="usuarios/cerrar_sesion.php">Cerrar sesion</a>
+            </div>
+        </nav>       
 
-        <h1>Tabla de Productos</h1>
+        <?php
+        // exit;
+        }
+        ?>
+
+        <h1 class="display-4 text-center">Tabla de Productos</h1>
         
         <?php
 
