@@ -45,8 +45,16 @@
             //echo "<h1>" . $_GET["id_producto"] . "</h1>";
 
             $id_producto = $_GET["id_producto"];
-            $sql ="SELECT * FROM productos WHERE id_producto = $id_producto";
-            $resultado = $_conexion -> query($sql);
+            /*$sql ="SELECT * FROM productos WHERE id_producto = $id_producto";
+            $resultado = $_conexion -> query($sql);*/
+
+            $sql = $_conexion -> prepare("SELECT * FROM productos WHERE id_producto = ?");
+
+            $sql -> bind_param("i", $id_producto);
+
+            $sql -> execute();
+
+            $resultado = $sql -> get_result();
 
         
 
@@ -60,8 +68,17 @@
             }
 
 
-            $sql = "SELECT * FROM categorias ORDER BY categoria";
-            $resultado = $_conexion -> query($sql);
+            /*$sql = "SELECT * FROM categorias ORDER BY categoria";
+            $resultado = $_conexion -> query($sql);*/
+
+            $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
+
+            $sql -> bind_param("s", $categoria);
+
+            $sql -> execute();
+
+            $resultado = $sql -> get_result();
+
             $categorias = [];
 
 
@@ -150,7 +167,7 @@
                  isset($descripcion) && isset($categoria) 
                   && isset($stock)){ 
 
-                    $sql = "UPDATE productos SET
+                    /*$sql = "UPDATE productos SET
                     nombre = '$nombre',
                     precio = '$precio',
                     categoria = '$categoria',
@@ -159,7 +176,20 @@
                     WHERE id_producto = $id_producto
                     ";
 
-                    $_conexion -> query($sql);
+                    $_conexion -> query($sql);*/
+
+                    $sql = $_conexion -> prepare("UPDATE productos SET
+                    nombre = ?,
+                    precio = ?,
+                    categoria = ?,
+                    stock = ?,
+                    descripcion = ?'
+                    WHERE id_producto = ?
+                    ");
+
+                    $sql -> bind_param("sdsisi", $nombre, $precio, $categoria, $stock, $descripcion, $id_producto);
+
+                    $sql -> execute();
 
                 } 
 

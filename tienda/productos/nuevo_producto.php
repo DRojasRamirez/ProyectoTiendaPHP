@@ -138,8 +138,17 @@
 
            }
 
-            $sql = "SELECT * FROM categorias ORDER BY categoria";
-            $resultado = $_conexion -> query($sql);
+            /*$sql = "SELECT * FROM categorias ORDER BY categoria";
+            $resultado = $_conexion -> query($sql);*/
+
+            $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
+
+            $sql -> bind_param("s",  $categoria);
+
+            $sql -> execute();
+
+            $resultado = $sql -> get_result();
+
             $categorias = [];
 
 
@@ -201,9 +210,16 @@
             if(isset($nombre) && isset($precio) && 
                 isset($descripcion) && isset($categoria) 
                 && isset($stock) && isset($ubicacion_final)){ 
-                $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion)
+               /* $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion)
                     VALUES ('$nombre', '$precio', '$categoria', '$stock', '$ubicacion_final', '$descripcion')";
-                $_conexion -> query($sql);    
+                $_conexion -> query($sql);    */
+
+                $sql = $_conexion -> prepare("INSERT INTO productos (nombre, precio, categoria, stock, descripcion)
+                    VALUES (?,?,?,?,?,?)");
+                
+                $sql -> bind_param("sdsis", $nombre, $precio, $categoria, $stock, $descripcion);
+
+                $sql -> execute();
             } 
 
         ?>

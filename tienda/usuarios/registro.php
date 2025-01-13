@@ -33,8 +33,17 @@
                 if($tmp_usuario == ""){
                     $err_usuario = "El usuario es obligatorio";
                 } else {
-                    $sql = "SELECT * FROM usuarios WHERE usuario = '$tmp_usuario'";
-                    $resultado = $_conexion -> query($sql);
+                    /*$sql = "SELECT * FROM usuarios WHERE usuario = '$tmp_usuario'";
+                    $resultado = $_conexion -> query($sql);*/
+
+                    $sql = $_conexion -> prepare("SELECT * FROM usuarios WHERE usuario = ?");
+
+                    $sql -> bind_param("s", $tmp_usuario);
+
+                    $sql -> execute();
+
+                    $resultado = $sql -> get_result();
+
                     if($resultado -> num_rows > 0){
                         $err_usuario = "El usuario " . $tmp_usuario . " ya existe";
                     } else {
@@ -69,8 +78,12 @@
                 if(isset($usuario) && isset($contrasena)){ 
 
                     $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
-                    $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
-                    $_conexion -> query($sql);
+                   /* $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+                    $_conexion -> query($sql);*/
+
+                    $sql = $_conexion -> prepare("INSERT INTO usuarios VALUES (?,?)");
+
+                    $sql -> bind_param("ss", $usuario, $contrasena_cifrada);
         
                     header("location: iniciar_sesion.php");
                     

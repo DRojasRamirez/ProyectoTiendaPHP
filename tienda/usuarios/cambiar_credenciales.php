@@ -96,13 +96,21 @@
 
                     $nueva_contrasena_cifrada = password_hash($nueva_contrasena, PASSWORD_DEFAULT);
 
-                    $sql = "UPDATE usuarios SET
+                   /* $sql = "UPDATE usuarios SET
                     usuario = '$usuario',
                     contrasena = '$nueva_contrasena_cifrada'
                     WHERE usuario = '$usuario'
                     ";
 
-                    $_conexion -> query($sql);
+                    $_conexion -> query($sql);*/
+
+                    $sql = $_conexion -> prepare("UPDATE usuarios SET
+                            contrasena = ?
+                            WHERE usuario = ?");
+                    
+                    $sql -> bind_param("ss", $contrasena, $usuario);
+
+                    $sql -> execute();
 
                     header("location: ../usuarios/cerrar_sesion.php");
                 }

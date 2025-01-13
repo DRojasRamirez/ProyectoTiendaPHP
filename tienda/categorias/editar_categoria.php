@@ -45,8 +45,18 @@
             //echo "<h1>" . $_GET["id_anime"] . "</h1>";
 
             $categoria = $_GET["categoria"];
+
+            /*
             $sql ="SELECT * FROM categorias WHERE categoria = '$categoria'";
-            $resultado = $_conexion -> query($sql);
+            $resultado = $_conexion -> query($sql);*/
+
+            $sql = $_conexion -> prepare("SELECT * FROM animes WHERE categoria = ?");
+
+            $sql -> bind_param("s", $categoria);
+
+            $sql -> execute();
+
+            $resultado = $sql -> get_result();
 
         
 
@@ -87,13 +97,23 @@
                 }
 
                 if(isset($categoria) && isset($descripcion)){
-                    $sql = "UPDATE categorias SET
+                    /*$sql = "UPDATE categorias SET
                     categoria = '$categoria',
                     descripcion = '$descripcion'
                     WHERE categoria = '$categoria'
                     ";
 
-                    $_conexion -> query($sql);
+                    $_conexion -> query($sql);*/
+
+                    $sql = $_conexion -> prepare ("UPDATE categorias SET
+                    categoria = ?,
+                    descripcion = ?
+                    WHERE categoria = ?");
+
+                    $sql -> bind_param("ss", $categoria, $descripcion);
+
+                    $sql -> execute();
+
                 }
 
                 

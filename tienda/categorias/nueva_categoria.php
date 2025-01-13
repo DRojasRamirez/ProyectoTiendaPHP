@@ -58,8 +58,18 @@
                 if($tmp_categoria == ""){
                     $err_categoria = "La categoria es obligatoria";
                 } else {
-                    $sql = "SELECT * FROM categorias WHERE categoria = '$tmp_categoria'";
-                    $resultado = $_conexion -> query($sql);
+
+                    /*$sql = "SELECT * FROM categorias WHERE categoria = '$tmp_categoria'";
+                    $resultado = $_conexion -> query($sql);*/
+
+                    $sql = $_conexion -> prepare("SELECT * FROM categorias WHERE categoria = ?");
+
+                    $sql -> bind_param("s", $tmp_categoria);
+
+                    $sql -> execute();
+
+                    $resultado = $sql -> get_result();
+
                     if($resultado -> num_rows > 0){
                         $err_categoria = "La categoria " . $tmp_categoria . " ya existe";
                     }else {
@@ -113,8 +123,14 @@
 
         <?php
             if(isset($categoria) && isset($descripcion)){ 
-                $sql = "INSERT INTO categorias (categoria, descripcion) VALUES ('$categoria', '$descripcion')";
-                $_conexion -> query($sql);    
+
+               /* $sql = "INSERT INTO categorias (categoria, descripcion) VALUES ('$categoria', '$descripcion')";
+                $_conexion -> query($sql);    */
+
+                $sql = $_conexion -> prepare ("INSERT INTO categorias (categoria, descripcion) VALUES (?,?)");
+
+                $sql -> bind_param("ss", $categoria, $descripcion);
+
             } 
         ?>
 

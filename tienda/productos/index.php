@@ -38,8 +38,15 @@
                 $id_producto = $_POST["id_producto"];
                 //echo "<h1>$id_producto</h1>";
                 //borrar producto
-                $sql = "DELETE FROM productos WHERE id_producto = $id_producto";
-                $_conexion -> query($sql);
+                /*$sql = "DELETE FROM productos WHERE id_producto = $id_producto";
+                $_conexion -> query($sql);*/
+
+                $sql = $_conexion -> prepare("DELETE FROM productos WHERE id_producto = ?");
+
+                $sql -> bind_param("i", $id_producto);
+
+                $sql -> execute();
+
             }
 
             $sql = "SELECT * FROM productos";
